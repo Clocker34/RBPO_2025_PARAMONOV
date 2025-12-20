@@ -1,174 +1,150 @@
-Доска объявлений (Spring Boot)
-Учебный REST‑сервис «Доска объявлений», реализованный на Spring Boot.
-Проект демонстрирует работу с базой данных через Spring Data JPA и набор бизнес‑операций поверх базового CRUD для сущностей доски объявлений.
-​
+Markdown в GitHub красиво рендерится только если текст оформлен без лишних ссылок вида [](url) и без «text» между блоками.​
 
-Технологии
-Java 17+
+Вот более компактная и аккуратная версия, которую можно прямо вставить в README.md вместо текущей:
 
-Spring Boot 3.5.5+
+text
+# Доска объявлений (Spring Boot)
 
-Spring Web
+Учебный REST‑сервис **«Доска объявлений»**, реализованный на Spring Boot.  
+Проект демонстрирует работу с базой данных через Spring Data JPA и бизнес‑операции поверх базового CRUD для сущностей доски объявлений.
 
-Spring Data JPA
+## Технологии
 
-PostgreSQL
+- Java 17+
+- Spring Boot 3.5.5+
+- Spring Web
+- Spring Data JPA
+- PostgreSQL
+- Maven
 
-Maven
-​
+## Быстрый старт
 
-Быстрый старт
-1. Клонирование репозитория
-bash
+### 1. Клонирование репозитория
+
 git clone https://github.com/Clocker34/RBPO_2025_PARAMONOV.git
 cd RBPO_2025_PARAMONOV
-2. Настройка базы данных
-В application.properties / application.yml должны быть указаны настройки подключения к PostgreSQL (имя БД, пользователь, пароль).
-При первом запуске Hibernate создаст таблицы users, categories, listings, messages, reports.​
 
-3. Запуск приложения
-Запуск через IDE (класс BulletinBoardApplication) или из командной строки:
-
-bash
-mvn spring-boot:run
-По умолчанию сервис доступен по адресу http://localhost:8080.
-
-Структура проекта
 text
+
+### 2. Настройка базы данных
+
+В `application.properties` / `application.yml` укажи настройки подключения к PostgreSQL (имя БД, пользователь, пароль).  
+При первом запуске Hibernate создаст таблицы `users`, `categories`, `listings`, `messages`, `reports`.
+
+### 3. Запуск приложения
+
+Запуск через IDE (класс `BulletinBoardApplication`) или:
+
+mvn spring-boot:run
+
+text
+
+По умолчанию сервис доступен по адресу `http://localhost:8080`.
+
+## Структура проекта
+
 src/main/java/ru/mtuci/bulletin_board/
 ├── controller/
-│   ├── ListingController.java
-│   ├── CategoryController.java
-│   ├── UserController.java
-│   ├── MessageController.java
-│   └── ReportController.java
+│ ├── ListingController.java
+│ ├── CategoryController.java
+│ ├── UserController.java
+│ ├── MessageController.java
+│ └── ReportController.java
 ├── entity/
-│   ├── Listing.java
-│   ├── Category.java
-│   ├── User.java
-│   ├── Message.java
-│   ├── Report.java
-│   └── ReportStatus.java
+│ ├── Listing.java
+│ ├── Category.java
+│ ├── User.java
+│ ├── Message.java
+│ ├── Report.java
+│ └── ReportStatus.java
 ├── repository/
-│   ├── ListingRepository.java
-│   ├── CategoryRepository.java
-│   ├── UserRepository.java
-│   ├── MessageRepository.java
-│   └── ReportRepository.java
+│ ├── ListingRepository.java
+│ ├── CategoryRepository.java
+│ ├── UserRepository.java
+│ ├── MessageRepository.java
+│ └── ReportRepository.java
 └── BulletinBoardApplication.java
-Сущности доменной области
-Listing — объявление с заголовком, описанием и связями с автором (User) и категорией (Category).
 
-Category — категория объявлений (например, «Техника», «Услуги», «Недвижимость», «Велосипеды»).
+text
 
-User — пользователь сервиса, автор объявлений, сообщений и жалоб.
+## Сущности доменной области
 
-Message — сообщение к объявлению для обсуждения условий.
+- **Listing** — объявление с заголовком, описанием и связями с автором (`User`) и категорией (`Category`).
+- **Category** — категория объявлений (например, «Техника», «Услуги», «Недвижимость»).
+- **User** — пользователь сервиса, автор объявлений, сообщений и жалоб.
+- **Message** — сообщение к объявлению для обсуждения условий.
+- **Report** — жалоба на объявление со статусом `NEW` / `IN_PROGRESS` / `CLOSED` (enum `ReportStatus`).
 
-Report — жалоба на объявление, связана с объявлением, пользователем и имеет статус NEW / IN_PROGRESS / CLOSED (enum ReportStatus).​
+## CRUD‑эндпоинты
 
-CRUD‑эндпоинты
-Все CRUD‑операции работают с реальной базой данных через Spring Data JPA.​
+### Объявления (Listing)
 
-Объявления (Listing)
-GET /api/listings — получить все объявления
+- `GET /api/listings`
+- `GET /api/listings/{id}`
+- `POST /api/listings`
+- `PUT /api/listings/{id}`
+- `DELETE /api/listings/{id}`
 
-GET /api/listings/{id} — получить объявление по id
+### Категории (Category)
 
-POST /api/listings — создать объявление (в теле JSON с вложенными author.id и category.id)
+- `GET /api/categories`
+- `GET /api/categories/{id}`
+- `POST /api/categories`
+- `PUT /api/categories/{id}`
+- `DELETE /api/categories/{id}`
 
-PUT /api/listings/{id} — обновить объявление
+### Пользователи (User)
 
-DELETE /api/listings/{id} — удалить объявление
+- `GET /api/users`
+- `GET /api/users/{id}`
+- `POST /api/users`
+- `PUT /api/users/{id}`
+- `DELETE /api/users/{id}`
 
-Категории (Category)
-GET /api/categories — получить все категории
+### Сообщения (Message)
 
-GET /api/categories/{id} — получить категорию по id
+- `GET /api/messages`
+- `GET /api/messages/{id}`
+- `POST /api/messages`
+- `PUT /api/messages/{id}`
+- `DELETE /api/messages/{id}`
 
-POST /api/categories — создать категорию
+### Жалобы (Report)
 
-PUT /api/categories/{id} — обновить категорию
+- `GET /api/reports`
+- `GET /api/reports/{id}`
+- `POST /api/reports`
+- `PUT /api/reports/{id}`
+- `DELETE /api/reports/{id}`
 
-DELETE /api/categories/{id} — удалить категорию
+## Бизнес‑операции поверх CRUD
 
-Пользователи (User)
-GET /api/users — получить всех пользователей
+- **Поиск объявлений по категории и автору**  
+  `GET /api/listings/search?categoryId={categoryId}&authorId={authorId}`
 
-GET /api/users/{id} — получить пользователя по id
+- **Поиск по тексту и категории**  
+  `GET /api/listings/search-by-text?text={text}&categoryId={categoryId}`
 
-POST /api/users — создать пользователя
+- **Все объявления пользователя**  
+  `GET /api/listings/by-author/{authorId}`
 
-PUT /api/users/{id} — обновить пользователя
+- **Подача жалобы на объявление**  
+  `POST /api/reports?listingId={listingId}&authorId={authorId}&reason={reason}`
 
-DELETE /api/users/{id} — удалить пользователя
+- **Изменение статуса жалобы**  
+  `PUT /api/reports/{id}/status?value=NEW|IN_PROGRESS|CLOSED`
 
-Сообщения (Message)
-GET /api/messages — получить все сообщения
+## Тестирование через Postman
 
-GET /api/messages/{id} — получить сообщение по id
+Пример сценария:
 
-POST /api/messages — создать сообщение
+1. Создать пользователя (`POST /api/users`).
+2. Создать категории (`POST /api/categories`).
+3. Создать объявления (`POST /api/listings`).
+4. Выполнить поисковые запросы (по автору, категории, тексту).
+5. Создать жалобу (`POST /api/reports`).
+6. Обновить статус жалобы (`PUT /api/reports/{id}/status`) и проверить через `GET /api/reports/{id}`.
 
-PUT /api/messages/{id} — обновить сообщение
+## Авторство
 
-DELETE /api/messages/{id} — удалить сообщение
-
-Жалобы (Report)
-GET /api/reports — получить все жалобы
-
-GET /api/reports/{id} — получить жалобу по id
-
-POST /api/reports — создать жалобу на объявление
-
-PUT /api/reports/{id} — обновить жалобу (при необходимости)
-
-DELETE /api/reports/{id} — удалить жалобу​
-
-Бизнес‑операции поверх CRUD
-Реализован набор операций, отражающих бизнес‑логику доски объявлений.​
-
-Поиск объявлений по категории и автору
-GET /api/listings/search?categoryId={categoryId}&authorId={authorId}
-Возвращает объявления, у которых совпадают и категория, и автор.
-
-Поиск по тексту и категории
-GET /api/listings/search-by-text?text={text}&categoryId={categoryId}
-Ищет по подстроке в заголовке (title) без учёта регистра в указанной категории.
-
-Все объявления пользователя
-GET /api/listings/by-author/{authorId}
-Возвращает все объявления выбранного пользователя.
-
-Подача жалобы на объявление
-POST /api/reports?listingId={listingId}&authorId={authorId}&reason={reason}
-Создаёт запись Report со статусом NEW и связями с объявлением и пользователем.
-
-Изменение статуса жалобы
-PUT /api/reports/{id}/status?value=NEW|IN_PROGRESS|CLOSED
-Обновляет поле status у жалобы (enum ReportStatus).​
-
-Тестирование через Postman
-Можно использовать коллекцию Postman (или собрать запросы вручную) для проверки типового сценария:
-​
-
-Создать пользователя (POST /api/users).
-
-Создать одну или несколько категорий (POST /api/categories).
-
-Создать объявления с привязкой к пользователю и категориям (POST /api/listings).
-
-Выполнить бизнес‑поиски:
-
-по автору и категории;
-
-по тексту и категории;
-
-все объявления пользователя.
-
-Создать жалобу на объявление (POST /api/reports).
-
-Изменить статус жалобы (PUT /api/reports/{id}/status) и проверить результат через GET /api/reports/{id}.
-
-Авторство
 Проект создан в рамках учебной практики по Spring Boot в МТУСИ.
