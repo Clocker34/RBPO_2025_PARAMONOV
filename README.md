@@ -143,6 +143,35 @@ text
 5. Создать жалобу (`POST /api/reports`).
 6. Обновить статус жалобы (`PUT /api/reports/{id}/status`) и проверить через `GET /api/reports/{id}`.
 
+## Аутентификация и JWT
+
+Доступ к защищённым эндпоинтам осуществляется по JWT‑токену, передаваемому в заголовке `Authorization` в формате:
+
+Authorization: Bearer <access_token>
+
+text
+
+### Основные эндпоинты аутентификации
+
+- `POST /api/auth/register` — регистрация нового пользователя.
+- `POST /api/auth/login` — вход по логину и паролю, возвращает `accessToken` и `refreshToken`.
+- `POST /api/auth/refresh` — обновление `accessToken` по действующему `refreshToken`.
+- `POST /api/auth/logout` — завершение сессии (инвалидация refresh‑токена пользователя).
+
+### Жизненный цикл токенов
+
+- **Access‑токен** — короткоживущий JWT, используется для доступа к защищённым ресурсам.
+- **Refresh‑токен** — долгоживущий токен, хранится в базе и привязан к пользователю и сессии.
+- При обновлении токена по `/api/auth/refresh` access‑токен пересоздаётся, а refresh‑токен при необходимости ротируется.
+
+### Пример запроса с токеном
+
+curl -X GET http://localhost:8080/api/listings
+-H "Authorization: Bearer <access_token>"
+
+text
+undefined
+
 ## Авторство
 
 Проект создан в рамках учебной практики по Spring Boot в МТУСИ.
